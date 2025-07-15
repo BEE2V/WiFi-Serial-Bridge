@@ -6,9 +6,14 @@ export const connectWebSocket = (onData) => {
   socket.onopen = () => {
     console.log("✅ WebSocket connected");
 
-    const page = window.location.pathname;
-    socket.send(page);
-    console.log("📤 Sent page info:", page);
+    // Small delay to ensure WebSocket is fully ready
+    setTimeout(() => {
+      if (socket?.readyState === WebSocket.OPEN) {
+        const page = window.location.pathname;
+        socket.send(page);
+        console.log("📤 Sent page info:", page);
+      }
+    }, 10);
   };
 
   socket.onmessage = (event) => {
